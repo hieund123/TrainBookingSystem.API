@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainBookingSystem.API", "TrainBookingSystem.API\TrainBookingSystem.API.csproj", "{A90C6AA5-47A1-4AC8-9578-B8A4BF23CB6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainBookingSystem.Service", "TrainBookingSystem.Service\TrainBookingSystem.Service.csproj", "{6681DBE1-80F5-496B-86A1-4A7DA369D368}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A90C6AA5-47A1-4AC8-9578-B8A4BF23CB6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A90C6AA5-47A1-4AC8-9578-B8A4BF23CB6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A90C6AA5-47A1-4AC8-9578-B8A4BF23CB6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A90C6AA5-47A1-4AC8-9578-B8A4BF23CB6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6681DBE1-80F5-496B-86A1-4A7DA369D368}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6681DBE1-80F5-496B-86A1-4A7DA369D368}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6681DBE1-80F5-496B-86A1-4A7DA369D368}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6681DBE1-80F5-496B-86A1-4A7DA369D368}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {78B8BB94-E24A-4379-AD04-9A0E10B6EA0B}
+	EndGlobalSection
+EndGlobal
