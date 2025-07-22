@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using TrainBookingSystem.API.Models;
+using TrainBookingSystem.API.Models.Tables;
 
 namespace TrainBookingSystem.API.Data
 {

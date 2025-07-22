@@ -35,25 +35,25 @@ namespace TrainBookingSystem.API.Controllers
 
         }
 
-        [HttpGet("test-send-email")]
-        public IActionResult TestSendEmail()
-        {
-            var message = new Message(
-                new[] { "ghechuoi1@gmail.com" },
-                "Test Subject",
-                "This is a test email."
-            );
+        //[HttpGet("test-send-email")]
+        //public IActionResult TestSendEmail()
+        //{
+        //    var message = new Message(
+        //        new[] { "ghechuoi1@gmail.com" },
+        //        "Test Subject",
+        //        "This is a test email."
+        //    );
 
-            try
-            {
-                _emailService.sendEmail(message);
-                return Ok("Email sent.");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Failed to send email: " + ex.ToString());
-            }
-        }
+        //    try
+        //    {
+        //        _emailService.sendEmail(message);
+        //        return Ok("Email sent.");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest("Failed to send email: " + ex.ToString());
+        //    }
+        //}
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterUserDto registerUser, string role)

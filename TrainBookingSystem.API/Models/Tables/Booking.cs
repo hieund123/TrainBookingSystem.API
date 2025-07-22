@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TrainBookingSystem.API.Models
+namespace TrainBookingSystem.API.Models.Tables
 {
     public class Booking
     {
