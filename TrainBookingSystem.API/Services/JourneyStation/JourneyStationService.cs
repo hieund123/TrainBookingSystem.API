@@ -41,5 +41,15 @@ namespace TrainBookingSystem.API.Services.JourneyStation
             _context.JourneyStations.Add(newJourneyStation);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<List<Models.Tables.TrainJourney>> GetJourneysHasStationAsync(int stationId)
+        {
+            return await _context.JourneyStations
+                .Where(js => js.TrainStationId == stationId)
+                .Select(js => js.TrainJourney)
+                .Distinct()
+                .ToListAsync();
+        }
+
     }
 }

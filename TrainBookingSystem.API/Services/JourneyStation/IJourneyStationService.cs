@@ -6,5 +6,7 @@ namespace TrainBookingSystem.API.Services.JourneyStation
     {
         Task<List<JourneyStationReadDto>> GetStationsByJourneyIdAsync(int journeyId);
         Task AddJourneyStationAsync(JourneyStationCreateDto dto);
+        Task<List<Models.Tables.TrainJourney>> GetJourneysHasStationAsync(int stationId);
+
     }
 }
