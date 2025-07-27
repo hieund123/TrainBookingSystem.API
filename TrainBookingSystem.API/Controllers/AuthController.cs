@@ -10,6 +10,7 @@ using TrainBookingSystem.API.Services.Authentication;
 using TrainBookingSystem.Service.Models;
 using TrainBookingSystem.Service.Services;
 using TrainBookingSystem.API.Models;
+using TrainBookingSystem.API.Models.Authentication.Update;
 
 namespace TrainBookingSystem.API.Controllers
 {
@@ -188,6 +189,19 @@ namespace TrainBookingSystem.API.Controllers
         {
             await _signInManager.SignOutAsync();
             return Ok(new { Status = "Success", Message = "Logout successful" });
+        }
+
+
+        [HttpPut("update")]
+        [Authorize]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto dto)
+        {
+            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(email))
+                return Unauthorized(new { Status = "Error", Message = "Invalid token: email missing" });
+
+            var result = await _authService.UpdateUserAsync(email, dto);
+            return Ok(result);
         }
 
     }

@@ -8,6 +8,7 @@ using TrainBookingSystem.API.Models;
 using TrainBookingSystem.API.Models.Authentication.Login;
 using TrainBookingSystem.API.Models.Authentication.Password;
 using TrainBookingSystem.API.Models.Authentication.SignUp;
+using TrainBookingSystem.API.Models.Authentication.Update;
 using TrainBookingSystem.Service.Models;
 using TrainBookingSystem.Service.Services;
 
@@ -219,6 +220,25 @@ namespace TrainBookingSystem.API.Services.Authentication
             return new Response { Status = "Success", Message = "Password reset successful." };
         }
 
+
+        public async Task<Response> UpdateUserAsync(string email, UpdateUserDto dto)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                return new Response { Status = "Error", Message = "User not found" };
+
+            user.PhoneNumber = dto.PhoneNumber;
+            user.UserName = dto.UserName;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                var errors = string.Join("; ", result.Errors.Select(e => e.Description));
+                return new Response { Status = "Error", Message = $"Update failed: {errors}" };
+            }
+
+            return new Response { Status = "Success", Message = "User updated successfully" };
+        }
 
     }
 }
