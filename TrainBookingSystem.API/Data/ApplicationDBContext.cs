@@ -48,6 +48,14 @@ namespace TrainBookingSystem.API.Data
                 .HasForeignKey(b => b.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Cấu hình khi xóa CarriageClass, các CarriagePrice liên quan cũng bị xóa
+            builder.Entity<CarriagePrice>()
+                .HasOne(cp => cp.CarriageClass)
+                .WithMany()
+                .HasForeignKey(cp => cp.CarriageClassId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
             builder.Entity<Booking>()
                 .HasOne(b => b.StartingTrainStation)
                 .WithMany()
