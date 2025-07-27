@@ -3,7 +3,7 @@
     public class CarriageClassCreateDTO
     {
         public string CarriageName { get; set; } = string.Empty;
-        public int SeatingCapacity { get; set; }
+        public int SeatingCapacity { get; set; } 
 
     }
 }

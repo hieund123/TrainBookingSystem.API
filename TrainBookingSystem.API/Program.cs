@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using TrainBookingSystem.API.Data;
 using TrainBookingSystem.API.Services.Authentication;
+using TrainBookingSystem.API.Services.Booking;
 using TrainBookingSystem.API.Services.CarriageClass;
 using TrainBookingSystem.API.Services.CarriagePrice;
 using TrainBookingSystem.API.Services.JourneyCarriage;
@@ -129,6 +130,8 @@ builder.Services.AddScoped<ICarriageClassService, CarriageClassService>();
 builder.Services.AddScoped<IJourneyCarriageService, JourneyCarriageService>();
 
 builder.Services.AddScoped<ICarriagePriceService, CarriagePriceService>();
+
+builder.Services.AddScoped<IBookingService, BookingService>();
 
 
 

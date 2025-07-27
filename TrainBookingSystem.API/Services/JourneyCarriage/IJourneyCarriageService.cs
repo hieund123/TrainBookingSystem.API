@@ -6,6 +6,7 @@ namespace TrainBookingSystem.API.Services.JourneyCarriage
     {
         Task<List<JourneyHasCarriageDTO>> GetJourneysHasCarriageAsync(int carriageClassId);
         Task<bool> InsertJourneyCarriageAsync(JourneyCarriageCreateDTO dto);
+        Task<List<JourneyCarriageDto>> GetCarriagesInJourneyAsync(int journeyId);
 
     }
 }

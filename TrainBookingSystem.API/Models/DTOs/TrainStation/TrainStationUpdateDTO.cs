@@ -2,6 +2,6 @@
 {
     public class TrainStationUpdateDTO
     {
-        public string StationName { get; set; }
+        public string StationName { get; set; } = string.Empty;
     }
 }

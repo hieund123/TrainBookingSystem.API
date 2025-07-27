@@ -53,5 +53,22 @@ namespace TrainBookingSystem.API.Services.JourneyCarriage
             return await _context.SaveChangesAsync() > 0;
         }
 
+        public async Task<List<JourneyCarriageDto>> GetCarriagesInJourneyAsync(int journeyId)
+        {
+            var carriages = await _context.JourneyCarriages
+                .Where(jc => jc.TrainJourneyId == journeyId)
+                .Include(jc => jc.CarriageClass)
+                .OrderBy(jc => jc.Position)
+                .ToListAsync();
+
+            return carriages.Select(jc => new JourneyCarriageDto
+            {
+                Id = jc.Id,
+                Position = jc.Position,
+                CarriageClassName = jc.CarriageClass.CarriageName,
+                TrainJourneyId = jc.TrainJourneyId
+            }).ToList();
+        }
+
     }
 }

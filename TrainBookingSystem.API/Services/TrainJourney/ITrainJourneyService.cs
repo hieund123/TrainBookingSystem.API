@@ -8,6 +8,10 @@ namespace TrainBookingSystem.API.Services.TrainJourney
         Task<TrainJourneyReadDTO?> GetJourneyByIdAsync(int id);
         Task<bool> IsJourneyExistAsync(string journeyName);
         Task<TrainJourneyReadDTO> InsertJourneyAsync(TrainJourneyCreateDTO dto);
-
+        Task<List<TrainJourneyDto>> SearchJourneys(
+            DateTime? departureDate,
+            int? startStationId,
+            int? endStationId
+        );
     }
 }

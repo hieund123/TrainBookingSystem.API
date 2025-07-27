@@ -66,5 +66,14 @@ namespace TrainBookingSystem.API.Controllers
                 return StatusCode(500, new { message = "Lỗi server", detail = ex.Message });
             }
         }
+
+
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchJourneys([FromQuery] DateTime? departureDate, [FromQuery] int? startStationId, [FromQuery] int? endStationId)
+        {
+            var result = await _trainJourneyService.SearchJourneys(departureDate, startStationId, endStationId);
+            return Ok(result);
+        }
+
     }
 }

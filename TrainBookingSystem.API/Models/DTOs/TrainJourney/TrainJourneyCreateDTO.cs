@@ -4,7 +4,7 @@ namespace TrainBookingSystem.API.Models.DTOs.TrainJourney
 {
     public class TrainJourneyCreateDTO
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public int ScheduleId { get; set; }
     }
 }

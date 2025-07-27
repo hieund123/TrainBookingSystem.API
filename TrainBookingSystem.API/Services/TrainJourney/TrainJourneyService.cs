@@ -76,5 +76,61 @@ namespace TrainBookingSystem.API.Services.TrainJourney
                 ScheduleName = schedule?.Name
             };
         }
+
+        public async Task<List<TrainJourneyDto>> SearchJourneys(DateTime? departureDate, int? startStationId, int? endStationId)
+        {
+            var query = _context.TrainJourneys
+                .Include(j => j.JourneyStations)
+                    .ThenInclude(js => js.TrainStation)
+                .AsQueryable();
+
+            if (departureDate.HasValue)
+            {
+                query = query.Where(j => j.DepartureDateTime.Date == departureDate.Value.Date);
+            }
+
+            // Lọc hành trình có chứa cả start và end station
+            if (startStationId.HasValue && endStationId.HasValue)
+            {
+                query = query.Where(j =>
+                    j.JourneyStations.Any(js => js.TrainStationId == startStationId.Value) &&
+                    j.JourneyStations.Any(js => js.TrainStationId == endStationId.Value));
+            }
+
+            var journeys = await query.ToListAsync();
+
+            var result = journeys
+                .Where(j =>
+                {
+                    var ordered = j.JourneyStations.OrderBy(js => js.StopOrder).ToList();
+
+                    if (startStationId.HasValue && endStationId.HasValue)
+                    {
+                        var startIndex = ordered.FindIndex(js => js.TrainStationId == startStationId);
+                        var endIndex = ordered.FindIndex(js => js.TrainStationId == endStationId);
+                        return startIndex != -1 && endIndex != -1 && startIndex < endIndex;
+                    }
+
+                    return true;
+                })
+                .Select(j =>
+                {
+                    var orderedStations = j.JourneyStations.OrderBy(js => js.StopOrder).ToList();
+                    var start = orderedStations.FirstOrDefault(js => js.TrainStationId == startStationId);
+                    var end = orderedStations.LastOrDefault(js => js.TrainStationId == endStationId);
+
+                    return new TrainJourneyDto
+                    {
+                        Id = j.Id,
+                        TrainName = j.Name,
+                        DepartureDateTime = j.DepartureDateTime,
+                        StartStationName = start?.TrainStation?.StationName,
+                        EndStationName = end?.TrainStation?.StationName
+                    };
+                }).ToList();
+
+            return result;
+        }
+
     }
 }

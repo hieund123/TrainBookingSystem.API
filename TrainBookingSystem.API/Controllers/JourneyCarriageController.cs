@@ -36,5 +36,13 @@ namespace TrainBookingSystem.API.Controllers
         }
 
 
+        [HttpGet("GetCarriagesInJourney/{journeyId}")]
+        public async Task<IActionResult> GetCarriagesInJourney(int journeyId)
+        {
+            var result = await _journeyCarriageService.GetCarriagesInJourneyAsync(journeyId);
+            return Ok(result);
+        }
+
+
     }
 }

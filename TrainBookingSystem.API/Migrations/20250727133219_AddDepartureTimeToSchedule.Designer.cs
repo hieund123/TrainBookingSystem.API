@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainBookingSystem.API.Data;
 
@@ -11,9 +12,11 @@ using TrainBookingSystem.API.Data;
 namespace TrainBookingSystem.API.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250727133219_AddDepartureTimeToSchedule")]
+    partial class AddDepartureTimeToSchedule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,14 +54,14 @@ namespace TrainBookingSystem.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "50c5eed9-7a35-4f8c-b15c-04f139de08b7",
+                            Id = "dee7ee07-f09c-4bb5-8156-7a7271a98515",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "4c4c0ae0-6ccd-4a3e-9f8f-772baf099659",
+                            Id = "a94cd6bf-422c-4265-8ce0-2792797f9cb6",
                             ConcurrencyStamp = "2",
                             Name = "Passenger",
                             NormalizedName = "PASSENGER"
@@ -412,6 +415,9 @@ namespace TrainBookingSystem.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<TimeSpan>("DepartureTime")
+                        .HasColumnType("time");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -429,7 +435,7 @@ namespace TrainBookingSystem.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("DepartureDateTime")
+                    b.Property<DateTime>("DepartureDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
