@@ -29,6 +29,11 @@ namespace TrainBookingSystem.API.Data
             // Gọi seed roles nếu có
             builder.SeedRoles();
 
+            // Ràng buộc: Mỗi TrainJourneyId không được trùng Position
+            builder.Entity<JourneyCarriage>()
+                .HasIndex(jc => new { jc.TrainJourneyId, jc.Position })
+                .IsUnique();
+
             // Cấu hình khóa chính phức hợp
             builder.Entity<JourneyStation>()
                 .HasKey(js => new { js.TrainStationId, js.TrainJourneyId });
@@ -41,14 +46,13 @@ namespace TrainBookingSystem.API.Data
                 .HasOne<IdentityUser>()
                 .WithMany()
                 .HasForeignKey(b => b.UserId)
-                .OnDelete(DeleteBehavior.Restrict); // Tránh multiple cascade
+                .OnDelete(DeleteBehavior.Restrict);
 
-            // Cấu hình quan hệ với TrainStation
             builder.Entity<Booking>()
                 .HasOne(b => b.StartingTrainStation)
                 .WithMany()
                 .HasForeignKey(b => b.StartingTrainStationId)
-                .OnDelete(DeleteBehavior.Restrict); // Tránh multiple cascade
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Booking>()
                 .HasOne(b => b.EndingTrainStation)
@@ -56,7 +60,6 @@ namespace TrainBookingSystem.API.Data
                 .HasForeignKey(b => b.EndingTrainStationId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Cấu hình decimal chính xác
             builder.Entity<CarriagePrice>()
                 .Property(cp => cp.Price)
                 .HasPrecision(18, 2);
@@ -65,5 +68,6 @@ namespace TrainBookingSystem.API.Data
                 .Property(b => b.AmountPaid)
                 .HasPrecision(18, 2);
         }
+
     }
 }
