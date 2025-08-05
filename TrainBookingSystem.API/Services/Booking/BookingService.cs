@@ -16,6 +16,9 @@ namespace TrainBookingSystem.API.Services.Booking
 
         public async Task<bool> CreateBookingAsync(BookingCreateDTO dto)
         {
+            if (!await _context.TrainJourneys.AnyAsync(j => j.Id == dto.TrainJourneyId)) return false;
+            if (!await _context.CarriageClasses.AnyAsync(c => c.Id == dto.CarriageClassId)) return false;
+
             // Kiểm tra trùng ghế
             bool seatTaken = await _context.Bookings.AnyAsync(b =>
                 b.TrainJourneyId == dto.TrainJourneyId &&
@@ -23,6 +26,12 @@ namespace TrainBookingSystem.API.Services.Booking
                 b.SeatNo == dto.SeatNo);
 
             if (seatTaken) return false;
+
+            // Lấy ID của BookingStatus "Confirmed"
+            var confirmedStatus = await _context.BookingStatuses
+                .FirstOrDefaultAsync(s => s.Name == "Confirmed");
+
+            if (confirmedStatus == null) return false;
 
             var booking = new Models.Tables.Booking
             {
@@ -32,7 +41,7 @@ namespace TrainBookingSystem.API.Services.Booking
                 EndingTrainStationId = dto.EndingTrainStationId,
                 CarriageClassId = dto.CarriageClassId,
                 SeatNo = dto.SeatNo,
-                BookingStatusId = 1,
+                BookingStatusId = confirmedStatus.Id,
                 BookingDate = DateTime.UtcNow,
                 TicketNo = Guid.NewGuid().ToString().Substring(0, 10),
                 AmountPaid = await GetPriceAsync(dto.TrainJourneyId, dto.CarriageClassId)
@@ -58,11 +67,14 @@ namespace TrainBookingSystem.API.Services.Booking
 
         private async Task<decimal> GetPriceAsync(int trainJourneyId, int carriageClassId)
         {
-            var journey = await _context.TrainJourneys.Include(j => j.Schedule)
+            var journey = await _context.TrainJourneys
                 .FirstOrDefaultAsync(j => j.Id == trainJourneyId);
 
-            var price = await _context.CarriagePrices.FirstOrDefaultAsync(p =>
-                p.ScheduleId == journey!.ScheduleId && p.CarriageClassId == carriageClassId);
+            if (journey == null)
+                throw new Exception($"TrainJourneyId {trainJourneyId} not found.");
+
+            var price = await _context.CarriagePrices
+                .FirstOrDefaultAsync(p => p.ScheduleId == journey.ScheduleId && p.CarriageClassId == carriageClassId);
 
             return price?.Price ?? 0;
         }

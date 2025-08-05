@@ -7,28 +7,28 @@ namespace TrainBookingSystem.API.Models.Tables
         public int Id { get; set; }
 
         [Required]
-        public string UserId { get; set; } = string.Empty; // FK tới AspNetUsers.Id
+        public string UserId { get; set; } = string.Empty;
 
         public int BookingStatusId { get; set; }
-        public BookingStatus BookingStatus { get; set; } = new BookingStatus();
+        public BookingStatus BookingStatus { get; set; } = null!;
 
         public int StartingTrainStationId { get; set; }
-        public TrainStation StartingTrainStation { get; set; } = new TrainStation();
+        public TrainStation? StartingTrainStation { get; set; }
 
         public int EndingTrainStationId { get; set; }
-        public TrainStation EndingTrainStation { get; set; } = new TrainStation();
+        public TrainStation? EndingTrainStation { get; set; }
 
         public int TrainJourneyId { get; set; }
-        public TrainJourney TrainJourney { get; set; } = new TrainJourney();
+        public TrainJourney? TrainJourney { get; set; }
 
         public int CarriageClassId { get; set; }
-        public CarriageClass CarriageClass { get; set; } = new CarriageClass();
+        public CarriageClass? CarriageClass { get; set; }
 
         public DateTime BookingDate { get; set; }
 
-        public string TicketNo { get; set; }  = string.Empty ;
+        public string TicketNo { get; set; } = string.Empty;
 
-        public string SeatNo { get; set; } = string.Empty ;
+        public string SeatNo { get; set; } = string.Empty;
 
         public decimal AmountPaid { get; set; }
 

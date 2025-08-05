@@ -3,10 +3,10 @@
     public class JourneyStation
     {
         public int TrainStationId { get; set; }
-        public TrainStation TrainStation { get; set; } = new TrainStation();
+        public TrainStation TrainStation { get; set; } 
 
         public int TrainJourneyId { get; set; }
-        public TrainJourney TrainJourney { get; set; } = new TrainJourney();
+        public TrainJourney TrainJourney { get; set; } 
 
         public int StopOrder { get; set; }
 

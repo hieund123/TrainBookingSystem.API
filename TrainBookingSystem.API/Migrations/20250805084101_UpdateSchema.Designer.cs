@@ -12,8 +12,8 @@ using TrainBookingSystem.API.Data;
 namespace TrainBookingSystem.API.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20250727134800_Rename_DepartureDate_To_DepartureDateTime")]
-    partial class Rename_DepartureDate_To_DepartureDateTime
+    [Migration("20250805084101_UpdateSchema")]
+    partial class UpdateSchema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,22 +50,6 @@ namespace TrainBookingSystem.API.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "50c5eed9-7a35-4f8c-b15c-04f139de08b7",
-                            ConcurrencyStamp = "1",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = "4c4c0ae0-6ccd-4a3e-9f8f-772baf099659",
-                            ConcurrencyStamp = "2",
-                            Name = "Passenger",
-                            NormalizedName = "PASSENGER"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -343,9 +327,6 @@ namespace TrainBookingSystem.API.Migrations
                     b.Property<int>("CarriageClassId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CarriageClassId1")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Price")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
@@ -353,8 +334,6 @@ namespace TrainBookingSystem.API.Migrations
                     b.HasKey("ScheduleId", "CarriageClassId");
 
                     b.HasIndex("CarriageClassId");
-
-                    b.HasIndex("CarriageClassId1");
 
                     b.ToTable("CarriagePrices");
                 });
@@ -569,14 +548,10 @@ namespace TrainBookingSystem.API.Migrations
             modelBuilder.Entity("TrainBookingSystem.API.Models.Tables.CarriagePrice", b =>
                 {
                     b.HasOne("TrainBookingSystem.API.Models.Tables.CarriageClass", "CarriageClass")
-                        .WithMany()
+                        .WithMany("CarriagePrices")
                         .HasForeignKey("CarriageClassId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("TrainBookingSystem.API.Models.Tables.CarriageClass", null)
-                        .WithMany("CarriagePrices")
-                        .HasForeignKey("CarriageClassId1");
 
                     b.HasOne("TrainBookingSystem.API.Models.Tables.Schedule", "Schedule")
                         .WithMany("CarriagePrices")

@@ -27,7 +27,7 @@ namespace TrainBookingSystem.API.Data
             base.OnModelCreating(builder);
 
             // Gọi seed roles nếu có
-            builder.SeedRoles();
+            //builder.SeedRoles();
 
             // Ràng buộc: Mỗi TrainJourneyId không được trùng Position
             builder.Entity<JourneyCarriage>()
@@ -51,10 +51,9 @@ namespace TrainBookingSystem.API.Data
             // Cấu hình khi xóa CarriageClass, các CarriagePrice liên quan cũng bị xóa
             builder.Entity<CarriagePrice>()
                 .HasOne(cp => cp.CarriageClass)
-                .WithMany()
+                .WithMany(cc => cc.CarriagePrices)
                 .HasForeignKey(cp => cp.CarriageClassId)
                 .OnDelete(DeleteBehavior.Cascade);
-
 
             builder.Entity<Booking>()
                 .HasOne(b => b.StartingTrainStation)
