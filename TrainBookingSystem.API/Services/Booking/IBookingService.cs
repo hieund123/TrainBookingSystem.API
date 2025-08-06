@@ -6,6 +6,7 @@ namespace TrainBookingSystem.API.Services.Booking
     {
         Task<bool> CreateBookingAsync(BookingCreateDTO dto);
         Task<List<string>> GetAvailableSeatsAsync(int trainJourneyId, int carriageClassId);
-
+        Task<List<BookingResponseDTO>> GetBookingsByUserIdAsync(string userId);
+        Task<bool> CancelBookingAsync(int bookingId);
     }
 }

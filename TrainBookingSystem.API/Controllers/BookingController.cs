@@ -36,5 +36,24 @@ namespace TrainBookingSystem.API.Controllers
                 AvailableSeats = seats
             });
         }
+
+        [HttpGet("GetByUser")]
+        public async Task<IActionResult> GetBookingsByUserId([FromQuery] string userId)
+        {
+            var result = await _bookingService.GetBookingsByUserIdAsync(userId);
+            return Ok(result);
+        }
+
+        [HttpPost("Cancel/{bookingId}")]
+        public async Task<IActionResult> CancelBooking(int bookingId)
+        {
+            var result = await _bookingService.CancelBookingAsync(bookingId);
+            if (!result)
+                return BadRequest(new { message = "Không thể hủy vé này." });
+
+            return Ok(new { message = "Hủy vé thành công." });
+        }
+
+
     }
 }

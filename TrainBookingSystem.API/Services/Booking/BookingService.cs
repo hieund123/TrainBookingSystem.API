@@ -79,5 +79,49 @@ namespace TrainBookingSystem.API.Services.Booking
             return price?.Price ?? 0;
         }
 
+        public async Task<List<BookingResponseDTO>> GetBookingsByUserIdAsync(string userId)
+        {
+            return await _context.Bookings
+                .Include(b => b.StartingTrainStation)
+                .Include(b => b.EndingTrainStation)
+                .Include(b => b.TrainJourney)
+                .ThenInclude(j => j.Schedule)
+                .Include(b => b.BookingStatus)
+                .Where(b => b.UserId == userId)
+                .Select(b => new BookingResponseDTO
+                {
+                    Id = b.Id,
+                    TicketNo = b.TicketNo,
+                    SeatNo = b.SeatNo,
+                    BookingDate = b.BookingDate,
+                    AmountPaid = b.AmountPaid,
+                    Status = b.BookingStatus.Name,
+                    StartingStationName = b.StartingTrainStation.StationName,
+                    EndingStationName = b.EndingTrainStation.StationName,
+                    TrainName = b.TrainJourney.Name
+                })
+                .ToListAsync();
+        }
+
+        public async Task<bool> CancelBookingAsync(int bookingId)
+        {
+            var booking = await _context.Bookings
+                .Include(b => b.BookingStatus)
+                .FirstOrDefaultAsync(b => b.Id == bookingId);
+
+            if (booking == null || booking.BookingStatus.Name != "Confirmed")
+                return false;
+
+            var canceledStatus = await _context.BookingStatuses
+                .FirstOrDefaultAsync(s => s.Name == "Cancelled");
+
+            if (canceledStatus == null)
+                return false;
+
+            booking.BookingStatusId = canceledStatus.Id;
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+
     }
 }
