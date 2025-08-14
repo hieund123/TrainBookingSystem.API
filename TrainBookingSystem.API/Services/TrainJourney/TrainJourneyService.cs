@@ -23,6 +23,7 @@ namespace TrainBookingSystem.API.Services.TrainJourney
             {
                 Id = j.Id,
                 Name = j.Name,
+                DateTime = j.DepartureDateTime,
                 ScheduleId = j.ScheduleId,
                 ScheduleName = j.Schedule?.Name
             }).ToList();

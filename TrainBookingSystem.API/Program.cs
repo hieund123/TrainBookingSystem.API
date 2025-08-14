@@ -20,6 +20,21 @@ using TrainBookingSystem.Service.Services;
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularClient",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:4200") // URL Angular
+                  .AllowAnyHeader()
+                  .AllowAnyMethod(); // Cho phép GET, POST, PUT, DELETE, OPTIONS
+        });
+});
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+    });
 
 
 // Add services to the container.
@@ -73,7 +88,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 // For Identity
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
-    options.SignIn.RequireConfirmedEmail = true;
+    options.SignIn.RequireConfirmedEmail = false;
     options.Tokens.ProviderMap.Add("email", new TokenProviderDescriptor(typeof(EmailTokenProvider<IdentityUser>)));
 })
     .AddEntityFrameworkStores<ApplicationDBContext>()
@@ -145,6 +160,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAngularClient");
 
 app.UseAuthentication();
 

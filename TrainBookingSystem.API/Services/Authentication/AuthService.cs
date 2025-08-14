@@ -51,7 +51,7 @@ namespace TrainBookingSystem.API.Services.Authentication
                 Email = registerUser.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = registerUser.Username,
-                TwoFactorEnabled = true
+                TwoFactorEnabled = false
             };
             var result = await _userManager.CreateAsync(user, registerUser.Password!);
             if (!result.Succeeded)
@@ -72,7 +72,7 @@ namespace TrainBookingSystem.API.Services.Authentication
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
             var clientUrl = _configuration["AppSettings:ClientUrl"];
-            var confirmationLink = $"{clientUrl}/api/auth/ConfirmEmail?token={Uri.EscapeDataString(token)}&email={user.Email}";
+            var confirmationLink = $"{clientUrl}api/auth/ConfirmEmail?token={Uri.EscapeDataString(token)}&email={user.Email}";
 
             var message = new Message(new string[] { user.Email! }, "Confirmation email link", confirmationLink);
             try
@@ -108,6 +108,7 @@ namespace TrainBookingSystem.API.Services.Authentication
             {
                 new Claim(ClaimTypes.Name, user.UserName!),
                 new Claim(ClaimTypes.Email, user.Email!),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
@@ -116,18 +117,18 @@ namespace TrainBookingSystem.API.Services.Authentication
                 authClaims.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            if (user.TwoFactorEnabled)
-            {
-                await _signInManager.SignOutAsync();
-                await _signInManager.PasswordSignInAsync(user.UserName!, loginDto.Password!, false, true);
+            //if (user.TwoFactorEnabled)
+            //{
+            //    await _signInManager.SignOutAsync();
+            //    await _signInManager.PasswordSignInAsync(user.UserName!, loginDto.Password!, false, true);
 
-                var token = await _userManager.GenerateTwoFactorTokenAsync(user, "email");
+            //    var token = await _userManager.GenerateTwoFactorTokenAsync(user, "email");
 
-                var message = new Message(new string[] { user.Email! }, "OTP confirmation", token);
-                _emailService.sendEmail(message);
+            //    var message = new Message(new string[] { user.Email! }, "OTP confirmation", token);
+            //    _emailService.sendEmail(message);
 
-                return new AuthResponse { Status = "Success", Message = $"We have sent an OTP to your email {user.Email}" };
-            }
+            //    return new AuthResponse { Status = "Success", Message = $"We have sent an OTP to your email {user.Email}" };
+            //}
 
             var jwtToken = GetToken(authClaims);
 

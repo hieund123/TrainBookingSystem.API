@@ -53,8 +53,17 @@ namespace TrainBookingSystem.API.Services.Booking
 
         public async Task<List<string>> GetAvailableSeatsAsync(int trainJourneyId, int carriageClassId)
         {
-            // Lấy danh sách tất cả ghế của loại toa này (ví dụ giả sử mỗi toa có 40 ghế từ A1 đến A40)
-            var allSeats = Enumerable.Range(1, 40).Select(i => $"A{i}").ToList();
+            var seatingCapacity = await _context.CarriageClasses
+                .Where(c => c.Id == carriageClassId)
+                .Select(c => c.SeatingCapacity)
+                .FirstOrDefaultAsync();
+
+            // Nếu không tìm thấy thì trả rỗng
+            if (seatingCapacity <= 0)
+                return new List<string>();
+
+            // Tạo danh sách tất cả ghế
+            var allSeats = Enumerable.Range(1, seatingCapacity).Select(i => $"A{i}").ToList();
 
             // Lấy danh sách ghế đã đặt
             var bookedSeats = await _context.Bookings
@@ -62,6 +71,7 @@ namespace TrainBookingSystem.API.Services.Booking
                 .Select(b => b.SeatNo)
                 .ToListAsync();
 
+            // Trả ghế còn trống
             return allSeats.Except(bookedSeats).ToList();
         }
 

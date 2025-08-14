@@ -65,6 +65,7 @@ namespace TrainBookingSystem.API.Services.JourneyCarriage
             {
                 Id = jc.Id,
                 Position = jc.Position,
+                CarriageClassId = jc.CarriageClassId,
                 CarriageClassName = jc.CarriageClass.CarriageName,
                 TrainJourneyId = jc.TrainJourneyId
             }).ToList();

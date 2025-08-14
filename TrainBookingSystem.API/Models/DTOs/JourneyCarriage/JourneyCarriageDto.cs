@@ -4,6 +4,9 @@
     {
         public int Id { get; set; }
         public int Position { get; set; }
+
+        public int CarriageClassId { get; set; }
+
         public string CarriageClassName { get; set; } = string.Empty;
         public int TrainJourneyId { get; set; }
 
