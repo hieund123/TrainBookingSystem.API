@@ -28,5 +28,24 @@ namespace TrainBookingSystem.API.Controllers
             await _journeyStationService.AddJourneyStationAsync(dto);
             return Ok(new { message = "Thêm ga dừng thành công." });
         }
+
+        [HttpDelete("{journeyId}/{stationId}")]
+        public async Task<IActionResult> DeleteJourneyStation(int journeyId, int stationId)
+        {
+            try
+            {
+                await _journeyStationService.DeleteJourneyStationAsync(journeyId, stationId);
+                return Ok(new { message = "Xóa ga dừng thành công." });
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound(new { message = "Ga dừng không tồn tại." });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
     }
 }

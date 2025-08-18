@@ -13,5 +13,8 @@ namespace TrainBookingSystem.API.Services.TrainJourney
             int? startStationId,
             int? endStationId
         );
+        Task<List<TrainJourneyReadDTO>> GetJourneysByScheduleIdAsync(int scheduleId);
+        Task<bool> DeleteJourneyAsync(int id);
+
     }
 }

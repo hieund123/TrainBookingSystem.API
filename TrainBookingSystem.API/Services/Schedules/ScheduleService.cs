@@ -18,5 +18,11 @@ namespace TrainBookingSystem.API.Services.Schedules
             return await _context.Schedules.ToListAsync();
         }
 
+        public async Task<Schedule?> GetScheduleByIdAsync(int id)
+        {
+            return await _context.Schedules
+                                 .FirstOrDefaultAsync(s => s.Id == id);
+        }
+
     }
 }

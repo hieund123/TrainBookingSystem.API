@@ -54,6 +54,16 @@ namespace TrainBookingSystem.API.Controllers
             return Ok(new { message = "Hủy vé thành công." });
         }
 
+        [HttpGet("Detail/{bookingId}")]
+        public async Task<IActionResult> GetBookingDetail(int bookingId)
+        {
+            var bookingDetail = await _bookingService.GetBookingDetailByIdAsync(bookingId);
+            if (bookingDetail == null)
+                return NotFound(new { message = "Không tìm thấy vé." });
+
+            return Ok(bookingDetail);
+        }
+
 
     }
 }

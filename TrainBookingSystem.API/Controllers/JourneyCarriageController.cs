@@ -43,6 +43,15 @@ namespace TrainBookingSystem.API.Controllers
             return Ok(result);
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteJourneyCarriage(int id)
+        {
+            var success = await _journeyCarriageService.DeleteJourneyCarriageAsync(id);
+            if (!success)
+                return BadRequest(new { message = "Xóa toa thất bại hoặc không tồn tại." });
+
+            return Ok(new { message = "Xóa toa thành công." });
+        }
 
     }
 }

@@ -71,5 +71,30 @@ namespace TrainBookingSystem.API.Services.JourneyCarriage
             }).ToList();
         }
 
+        public async Task<bool> DeleteJourneyCarriageAsync(int journeyCarriageId)
+        {
+            var carriage = await _context.JourneyCarriages
+                .FirstOrDefaultAsync(jc => jc.Id == journeyCarriageId);
+
+            if (carriage == null) return false;
+
+            int journeyId = carriage.TrainJourneyId;
+            int removedPosition = carriage.Position;
+
+            _context.JourneyCarriages.Remove(carriage);
+
+            // Giảm vị trí của các toa phía sau
+            var affected = await _context.JourneyCarriages
+                .Where(jc => jc.TrainJourneyId == journeyId && jc.Position > removedPosition)
+                .ToListAsync();
+
+            foreach (var item in affected)
+            {
+                item.Position -= 1;
+            }
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+
     }
 }

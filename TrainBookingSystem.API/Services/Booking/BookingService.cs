@@ -132,6 +132,33 @@ namespace TrainBookingSystem.API.Services.Booking
             return await _context.SaveChangesAsync() > 0;
         }
 
+        public async Task<BookingDetailDTO?> GetBookingDetailByIdAsync(int bookingId)
+        {
+            var booking = await _context.Bookings
+                .Include(b => b.TrainJourney)
+                .Include(b => b.CarriageClass)
+                .Include(b => b.BookingStatus)
+                .Include(b => b.StartingTrainStation)
+                .Include(b => b.EndingTrainStation)
+                .FirstOrDefaultAsync(b => b.Id == bookingId);
+
+            if (booking == null) return null;
+
+            return new BookingDetailDTO
+            {
+                BookingId = booking.Id,
+                TicketNo = booking.TicketNo,
+                BookingDate = booking.BookingDate,
+                SeatNo = booking.SeatNo,
+                AmountPaid = booking.AmountPaid,
+                TrainJourneyName = booking.TrainJourney?.Name ?? string.Empty,
+                DepartureDateTime = booking.TrainJourney?.DepartureDateTime ?? DateTime.MinValue,
+                StartingStationName = booking.StartingTrainStation?.StationName ?? string.Empty,
+                EndingStationName = booking.EndingTrainStation?.StationName ?? string.Empty,
+                CarriageClassName = booking.CarriageClass?.CarriageName ?? string.Empty,
+                Status = booking.BookingStatus?.Name ?? string.Empty
+            };
+        }
 
     }
 }

@@ -8,5 +8,6 @@
         public DateTime DateTime { get; set; }
         public int ScheduleId { get; set; }
         public string? ScheduleName { get; set; }
+        public DateTime DepartureDateTime { get; set; }
     }
 }

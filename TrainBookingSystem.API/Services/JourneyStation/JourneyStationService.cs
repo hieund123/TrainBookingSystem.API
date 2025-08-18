@@ -51,5 +51,17 @@ namespace TrainBookingSystem.API.Services.JourneyStation
                 .ToListAsync();
         }
 
+        public async Task DeleteJourneyStationAsync(int journeyId, int stationId)
+        {
+            var journeyStation = await _context.JourneyStations
+                .FirstOrDefaultAsync(js => js.TrainJourneyId == journeyId && js.TrainStationId == stationId);
+
+            if (journeyStation == null)
+                throw new KeyNotFoundException("Ga dừng không tồn tại");
+
+            _context.JourneyStations.Remove(journeyStation);
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

@@ -8,5 +8,7 @@ namespace TrainBookingSystem.API.Services.Booking
         Task<List<string>> GetAvailableSeatsAsync(int trainJourneyId, int carriageClassId);
         Task<List<BookingResponseDTO>> GetBookingsByUserIdAsync(string userId);
         Task<bool> CancelBookingAsync(int bookingId);
+        Task<BookingDetailDTO?> GetBookingDetailByIdAsync(int bookingId);
+
     }
 }

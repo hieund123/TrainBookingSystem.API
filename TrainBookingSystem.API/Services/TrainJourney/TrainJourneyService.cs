@@ -60,7 +60,8 @@ namespace TrainBookingSystem.API.Services.TrainJourney
             var newJourney = new Models.Tables.TrainJourney
             {
                 Name = dto.Name,
-                ScheduleId = dto.ScheduleId
+                ScheduleId = dto.ScheduleId,
+                DepartureDateTime = dto.DepartureDateTime
             };
 
             _context.TrainJourneys.Add(newJourney);
@@ -74,7 +75,8 @@ namespace TrainBookingSystem.API.Services.TrainJourney
                 Id = newJourney.Id,
                 Name = newJourney.Name,
                 ScheduleId = newJourney.ScheduleId,
-                ScheduleName = schedule?.Name
+                ScheduleName = schedule?.Name,
+                DepartureDateTime = newJourney.DepartureDateTime
             };
         }
 
@@ -131,6 +133,44 @@ namespace TrainBookingSystem.API.Services.TrainJourney
                 }).ToList();
 
             return result;
+        }
+
+        public async Task<List<TrainJourneyReadDTO>> GetJourneysByScheduleIdAsync(int scheduleId)
+        {
+            var journeys = await _context.TrainJourneys
+                .Include(j => j.Schedule)
+                .Where(j => j.ScheduleId == scheduleId)
+                .ToListAsync();
+
+            return journeys.Select(j => new TrainJourneyReadDTO
+            {
+                Id = j.Id,
+                Name = j.Name,
+                DateTime = j.DepartureDateTime,
+                ScheduleId = j.ScheduleId,
+                ScheduleName = j.Schedule?.Name
+            }).ToList();
+        }
+
+        public async Task<bool> DeleteJourneyAsync(int id)
+        {
+            var journey = await _context.TrainJourneys
+                .Include(j => j.JourneyStations)
+                .Include(j => j.JourneyCarriages)
+                .Include(j => j.Bookings)
+                .FirstOrDefaultAsync(j => j.Id == id);
+
+            if (journey == null)
+                return false;
+
+            // Xóa các liên kết trước khi xóa chính journey
+            _context.JourneyStations.RemoveRange(journey.JourneyStations);
+            _context.JourneyCarriages.RemoveRange(journey.JourneyCarriages);
+            _context.Bookings.RemoveRange(journey.Bookings);
+
+            _context.TrainJourneys.Remove(journey);
+
+            return await _context.SaveChangesAsync() > 0;
         }
 
     }

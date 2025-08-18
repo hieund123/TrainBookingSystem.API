@@ -20,6 +20,17 @@ namespace TrainBookingSystem.API.Controllers
             var schedules = await _scheduleService.GetAllSchedulesAsync();
             return Ok(schedules);
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetScheduleById(int id)
+        {
+            var schedule = await _scheduleService.GetScheduleByIdAsync(id);
+            if (schedule == null)
+                return NotFound(new { message = "Không tìm thấy lịch trình" });
+
+            return Ok(schedule);
+        }
+
     }
 }
 

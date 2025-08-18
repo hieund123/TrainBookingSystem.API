@@ -75,5 +75,24 @@ namespace TrainBookingSystem.API.Controllers
             return Ok(result);
         }
 
+
+        [HttpGet("by-schedule/{scheduleId}")]
+        public async Task<ActionResult<IEnumerable<TrainJourneyReadDTO>>> GetJourneysByScheduleId(int scheduleId)
+        {
+            var journeys = await _trainJourneyService.GetJourneysByScheduleIdAsync(scheduleId);
+            return Ok(journeys);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteJourney(int id)
+        {
+            var success = await _trainJourneyService.DeleteJourneyAsync(id);
+            if (!success)
+            {
+                return BadRequest(new { message = "Xóa hành trình thất bại." });
+            }
+            return Ok(new { message = "Hành trình đã được xóa thành công." });
+        }
+
     }
 }
