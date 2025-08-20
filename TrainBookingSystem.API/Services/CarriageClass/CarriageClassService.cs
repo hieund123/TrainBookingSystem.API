@@ -67,6 +67,18 @@ namespace TrainBookingSystem.API.Services.CarriageClass
             return true;
         }
 
+        public async Task<bool> UpdateCarriageClassAsync(int id, CarriageClassUpdateDTO dto)
+        {
+            var carriageClass = await _context.CarriageClasses.FindAsync(id);
+            if (carriageClass == null) return false;
+
+            carriageClass.CarriageName = dto.CarriageName;
+            carriageClass.SeatingCapacity = dto.SeatingCapacity;
+
+            _context.CarriageClasses.Update(carriageClass);
+            return await _context.SaveChangesAsync() > 0;
+        }
+
 
     }
 }

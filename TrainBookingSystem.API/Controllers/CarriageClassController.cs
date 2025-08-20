@@ -70,5 +70,15 @@ namespace TrainBookingSystem.API.Controllers
             return Ok(new { message = "Xóa loại toa thành công." });
         }
 
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateCarriageClass(int id, [FromBody] CarriageClassUpdateDTO dto)
+        {
+            var success = await _carriageClassService.UpdateCarriageClassAsync(id, dto);
+            if (!success)
+                return NotFound(new { message = "Không tìm thấy loại toa cần sửa." });
+
+            return Ok(new { message = "Cập nhật loại toa thành công." });
+        }
     }
 }

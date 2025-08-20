@@ -8,6 +8,7 @@ namespace TrainBookingSystem.API.Services.CarriageClass
         Task<CarriageClassReadDTO> GetCarriageClassByIdAsync(int id);
         Task<bool> InsertCarriageClassAsync(CarriageClassCreateDTO dto);
         Task<bool> DeleteCarriageClassAsync(int id, bool force = false);
+        Task<bool> UpdateCarriageClassAsync(int id, CarriageClassUpdateDTO dto);
 
     }
 }
